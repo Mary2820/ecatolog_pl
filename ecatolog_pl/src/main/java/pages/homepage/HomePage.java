@@ -7,6 +7,7 @@ import services.DriverService;
 
 public class HomePage extends BasePage {
     private Catalog catalog = null;
+    private DriverService driverService;
 
     @FindBy(xpath = "//android.view.View/android.widget.EditText")
     public WebElement searchField;
@@ -14,18 +15,22 @@ public class HomePage extends BasePage {
     @FindBy(xpath = "/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.FrameLayout[1]/android.widget.FrameLayout[2]/android.webkit.WebView/android.view.View/android.view.View/android.view.View[2]/android.view.View[2]/android.view.View[1]/android.view.View/android.view.View")
     public WebElement carouselView;
 
+    public HomePage(DriverService driverService) {
+        super(driverService);
+    }
+
     public void navigateToSearchByClick() {
-        DriverService.waitElement(searchField);
+        driverService.waitElement(searchField);
         searchField.click();
     }
 
     public HomePage openSite() {
-        DriverService.openSite();
+        driverService.openSite();
         return this;
     }
 
     public boolean isCatalogItemDisplayed (String expectedItemName) {
-        catalog = new Catalog();
+        catalog = new Catalog(driverService);
         CatalogItem item = catalog.findItemByName(expectedItemName);
 
         return item.arrow.isDisplayed() &&
@@ -35,21 +40,21 @@ public class HomePage extends BasePage {
     }
 
     public void scrollDown (String elementText) {
-        DriverService.waitElement(searchField);
+        driverService.waitElement(searchField);
         WebElement text = getElementText(elementText);
         while (text == null) {
-            DriverService.scrollDown();
+            driverService.scrollDown();
             text = getElementText(elementText);
         }
     }
 
     public void swipeCarouselView () {
-        DriverService.waitElement(carouselView);
-        DriverService.swipeLeft(carouselView);
+        driverService.waitElement(carouselView);
+        driverService.swipeLeft(carouselView);
     }
 
     private WebElement getElementText (String text) {
-        catalog = new Catalog();
+        catalog = new Catalog(driverService);
         return catalog.getElementText(text);
     }
 }

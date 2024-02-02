@@ -6,6 +6,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import pages.homepage.Catalog;
 import pages.homepage.HomePage;
+import services.DriverService;
+import startUp.DriverInitializer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,7 +44,7 @@ public class CatalogTests {
 
     @Test
     public void whenHomePageIsOpened_shouldBeDisplayedCatalogItem1 () {
-        HomePage homePage = new HomePage();
+        HomePage homePage = new HomePage(new DriverService(new DriverInitializer()));
 
         homePage.openSite();
         homePage.scrollDown(catalogElement);

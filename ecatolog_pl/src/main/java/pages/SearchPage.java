@@ -5,14 +5,20 @@ import org.openqa.selenium.support.FindBy;
 import services.DriverService;
 
 public class SearchPage extends BasePage {
+    private DriverService driverService;
+
     @FindBy(xpath = "//android.widget.EditText[@resource-id=\"ek-search\"]")
     private WebElement entryField;
 
+    public SearchPage(DriverService driverService) {
+        super(driverService);
+    }
+
     public void enterData(String searchData) {
-        DriverService.waitElement(entryField);
+        driverService.waitElement(entryField);
         entryField.click();
-        DriverService.waitElement(entryField);
+        driverService.waitElement(entryField);
         entryField.sendKeys(searchData);
-        DriverService.hideKeyboard();
+        driverService.hideKeyboard();
     }
 }

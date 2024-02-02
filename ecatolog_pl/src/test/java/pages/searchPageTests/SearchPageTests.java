@@ -7,6 +7,8 @@ import org.junit.runners.Parameterized;
 import pages.homepage.HomePage;
 import pages.SearchPage;
 import pages.SearchResultsPage;
+import services.DriverService;
+import startUp.DriverInitializer;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,9 +33,12 @@ public class SearchPageTests {
 
     @Test
     public void whenSearchFilled_shouldBeNavigatedToListingPageWithExpectedResult ()  {
-        HomePage homePage = new HomePage();
-        SearchPage searchPage = new SearchPage();
-        SearchResultsPage listingPage = new SearchResultsPage();
+        DriverInitializer driverInitializer = new DriverInitializer();
+        DriverService driverService = new DriverService(driverInitializer);
+
+        HomePage homePage = new HomePage(driverService);
+        SearchPage searchPage = new SearchPage(driverService);
+        SearchResultsPage listingPage = new SearchResultsPage(driverService);
 
         homePage.openSite()
                 .navigateToSearchByClick();

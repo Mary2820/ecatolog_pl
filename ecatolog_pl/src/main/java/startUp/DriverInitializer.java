@@ -14,10 +14,10 @@ import utils.constants.PlatformConstants;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-abstract public class DriverInitializer {
-    private static AppiumDriver driver = null;
+public class DriverInitializer {
+    private AppiumDriver driver = null;
 
-    public static AppiumDriver getDriver() {
+    public AppiumDriver getDriver() {
         if (driver == null) {
             try {
                 if(Configuration.PLATFORM == PlatformName.Android){
@@ -34,7 +34,7 @@ abstract public class DriverInitializer {
         return driver;
     }
 
-    private static DesiredCapabilities setCapabilities() {
+    private DesiredCapabilities setCapabilities() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         if (PlatformName.Android == Configuration.PLATFORM) {
             capabilities.setCapability(String.valueOf(Capabilities.platformName), PlatformName.Android);

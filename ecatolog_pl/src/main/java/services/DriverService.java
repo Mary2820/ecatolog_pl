@@ -1,6 +1,7 @@
 package services;
 
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
@@ -8,6 +9,7 @@ import io.appium.java_client.proxy.NotImplementedException;
 import models.enums.FindType;
 import models.enums.PlatformName;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.PointerInput;
@@ -23,31 +25,36 @@ import java.time.Duration;
 import java.util.Collections;
 
 public class DriverService {
-    private static final int deviceWidth = getDeviceWidth();
-    private static final int deviceHeight = getDeviceHeight();
+    private final int deviceWidth = getDeviceWidth();
+    private final int deviceHeight = getDeviceHeight();
+    private final AppiumDriver driver;
 
-    public static void initPageElements(Object page) {
-        PageFactory.initElements(DriverInitializer.getDriver(), page);
+    public DriverService(DriverInitializer driverInitializer) {
+        driver = driverInitializer.getDriver();
     }
 
-    public static void hideKeyboard() {
+    public void initPageElements(Object page) {
+        PageFactory.initElements(driver, page);
+    }
+
+    public void hideKeyboard() {
         if (PlatformName.Android == Configuration.PLATFORM) {
-            ((AndroidDriver) DriverInitializer.getDriver()).pressKey(new KeyEvent(AndroidKey.ENTER));
+            ((AndroidDriver)driver).pressKey(new KeyEvent(AndroidKey.ENTER));
         } else if (PlatformName.iOS == Configuration.PLATFORM) {
             throw new NotImplementedException();
         }
     }
 
-    public static void waitElement(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(DriverInitializer.getDriver(), Duration.ofSeconds(10));
+    public void waitElement(WebElement webElement) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOfAllElements(webElement));
     }
 
-    public static void openSite() {
-        DriverInitializer.getDriver().get(Urls.URL_SITE);
+    public void openSite() {
+        driver.get(Urls.URL_SITE);
     }
 
-    public static WebElement findElementBy(FindType findType, String path) {
+    public WebElement findElementBy(FindType findType, String path) {
         By by = null;
         if (findType == FindType.xpath) {
             by = AppiumBy.xpath(path);
@@ -56,7 +63,7 @@ public class DriverService {
         }
         WebElement element = null;
         try {
-            element = DriverInitializer.getDriver().findElement(by);
+            element = driver.findElement(by);
         } catch (Exception e) {
             System.out.println("element doesn't found");
             System.out.println(e.getMessage());
@@ -64,7 +71,7 @@ public class DriverService {
         return element;
     }
 
-    public static void scrollDown() {
+    public void scrollDown() {
         int heightOneEight = deviceHeight / 8;
         int heightQuarter = deviceHeight / 4;
         int widthHalf = deviceWidth / 2;
@@ -75,7 +82,7 @@ public class DriverService {
         moveFingerByCoordinates(point1, point2);
     }
 
-    public static void swipeLeft(WebElement element) {
+    public void swipeLeft(WebElement element) {
         int widthQuarter = deviceWidth / 4;
         int widthHalf = deviceWidth / 2;
         Point elementLocation = element.getLocation();
@@ -86,15 +93,19 @@ public class DriverService {
         moveFingerByCoordinates(point1, point2);
     }
 
-    public static int getDeviceHeight() {
-        return DriverInitializer.getDriver().manage().window().getSize().getHeight();
+    private Dimension getWindowsSize () {
+        return driver.manage().window().getSize();
     }
 
-    public static int getDeviceWidth() {
-        return DriverInitializer.getDriver().manage().window().getSize().getWidth();
+    private int getDeviceHeight() {
+        return getWindowsSize().getHeight();
     }
 
-    private static void moveFingerByCoordinates(Point point1, Point point2) {
+    private int getDeviceWidth() {
+        return getWindowsSize().getWidth();
+    }
+
+    private void moveFingerByCoordinates(Point point1, Point point2) {
         PointerInput finger = new PointerInput(PointerInput.Kind.TOUCH, "finger");
         Sequence scroll = new Sequence(finger, 1);
         scroll.addAction(finger.createPointerMove(Duration.ofMillis(0), PointerInput.Origin.viewport(), point1.x, point1.y));
@@ -103,6 +114,6 @@ public class DriverService {
         scroll.addAction(finger.createPointerMove(Duration.ofMillis(250), PointerInput.Origin.viewport(), point2.x, point2.y));
 
         scroll.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
-        DriverInitializer.getDriver().perform(Collections.singletonList(scroll));
+        driver.perform(Collections.singletonList(scroll));
     }
 }
