@@ -11,11 +11,17 @@ import org.testng.Assert;
 import utils.constants.Configuration;
 import utils.constants.PlatformConstants;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class DriverInitializer {
-    private AppiumDriver driver = null;
+    private AppiumDriver driver;
+    @Inject
+    public DriverInitializer() {
+        driver = getDriver();
+    }
 
     public AppiumDriver getDriver() {
         if (driver == null) {

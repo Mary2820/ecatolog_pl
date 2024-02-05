@@ -21,16 +21,22 @@ import startUp.DriverInitializer;
 import utils.constants.Configuration;
 import utils.constants.Urls;
 
+import javax.inject.Inject;
 import java.time.Duration;
 import java.util.Collections;
 
 public class DriverService {
-    private final int deviceWidth = getDeviceWidth();
-    private final int deviceHeight = getDeviceHeight();
     private final AppiumDriver driver;
+    private final int deviceWidth;
+    private final int deviceHeight;
 
+
+    @Inject
     public DriverService(DriverInitializer driverInitializer) {
         driver = driverInitializer.getDriver();
+
+        deviceWidth = getDeviceWidth();
+        deviceHeight = getDeviceHeight();
     }
 
     public void initPageElements(Object page) {
@@ -46,7 +52,7 @@ public class DriverService {
     }
 
     public void waitElement(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         wait.until(ExpectedConditions.visibilityOfAllElements(webElement));
     }
 

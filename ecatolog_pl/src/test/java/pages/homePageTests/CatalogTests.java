@@ -1,23 +1,20 @@
 package pages.homePageTests;
 
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import pages.homepage.Catalog;
 import pages.homepage.HomePage;
+import services.DaggerDriverComponents;
+import services.DriverComponents;
 import services.DriverService;
-import startUp.DriverInitializer;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @RunWith(Parameterized.class)
 public class CatalogTests {
+    private static HomePage homePage;
     private final String catalogElement;
-    private static String[] catalogElements = {"TELEFONY I GADŻETY", "KOMPUTERY", "FOTO & WIDEO", "TELEWIZJA I PROJEKTORY",
+    private static final String[] catalogElements = {"TELEFONY I GADŻETY", "KOMPUTERY", "FOTO & WIDEO", "TELEWIZJA I PROJEKTORY",
             "AUDIO", "SPRZĘT AGD", "KLIMATYZACJA, OGRZEWANIE I ZAOPATRZENIE W WODĘ", "DOM I REMONT", "DLA DZIECI", "MOTORYZACJA",
             "SPRZĘT OGRODNICZY", "TURYSTYKA I WĘDKARSTWO", "SPORT I REKREACJA", "ZEGARKI, BIŻUTERIA I AKCESORIA"} ;
 
@@ -42,10 +39,14 @@ public class CatalogTests {
 //        Assert.assertTrue(Catalog.title.isDisplayed());
 //    }
 
+    @BeforeClass
+    public static void initTests(){
+        DriverComponents driverComponents = DaggerDriverComponents.builder().build();
+        homePage = driverComponents.getHomePage();
+    }
+
     @Test
     public void whenHomePageIsOpened_shouldBeDisplayedCatalogItem1 () {
-        HomePage homePage = new HomePage(new DriverService(new DriverInitializer()));
-
         homePage.openSite();
         homePage.scrollDown(catalogElement);
 

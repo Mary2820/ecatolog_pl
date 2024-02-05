@@ -5,13 +5,13 @@ import org.openqa.selenium.WebElement;
 import pages.BasePage;
 import services.DriverService;
 
+import javax.inject.Inject;
+
 public class CatalogItem extends BasePage {
     public WebElement element;
     public WebElement icon;
     public WebElement arrow;
     public WebElement text;
-
-    private DriverService driverService;
 
     public CatalogItem(DriverService driverService) {
         super(driverService);
