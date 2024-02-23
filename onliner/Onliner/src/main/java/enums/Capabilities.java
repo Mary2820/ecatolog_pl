@@ -6,5 +6,6 @@ public enum Capabilities {
     deviceName,
     app,
     appWaitActivity,
-    automationName
+    automationName,
+    noReset
 }

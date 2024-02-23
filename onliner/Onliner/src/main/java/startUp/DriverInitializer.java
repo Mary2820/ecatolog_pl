@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 abstract public class DriverInitializer {
-    private static AppiumDriver driver = null;
+    public static AppiumDriver driver = null;
 
     public static AppiumDriver getDriver() {
         if (driver == null) {
@@ -43,10 +43,16 @@ abstract public class DriverInitializer {
             capabilities.setCapability(String.valueOf(Capabilities.app), PlatformConstants.Android.APP);
             capabilities.setCapability(String.valueOf(Capabilities.appWaitActivity), PlatformConstants.Android.APP_WAIT_ACTIVITY);
             capabilities.setCapability(String.valueOf(Capabilities.automationName), PlatformConstants.Android.AUTOMATER_NAME);
+//            capabilities.setCapability(String.valueOf(Capabilities.noReset), PlatformConstants.Android.NO_RESET);
         }
         else if (PlatformName.iOS == Configuration.PLATFORM) {
             throw new NotImplementedException();
         }
         return capabilities;
+    }
+
+    public static void setDriverNull () {
+        driver.quit();
+        driver = null;
     }
 }

@@ -2,7 +2,6 @@ package pages;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.testng.annotations.BeforeTest;
 import services.DriverService;
 
 public class Model extends BasePage {
@@ -10,7 +9,7 @@ public class Model extends BasePage {
     private WebElement cancelButton;
 
     public void clickCancelButton () {
-        DriverService.waitElement(cancelButton);
+        DriverService.waitElementUseElement(cancelButton);
         cancelButton.isDisplayed();
         cancelButton.click();
     }

@@ -4,18 +4,17 @@ import constants.Configuration;
 import enums.FindType;
 import enums.PlatformName;
 import io.appium.java_client.AppiumBy;
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.nativekey.AndroidKey;
 import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.proxy.NotImplementedException;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Point;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import org.openqa.selenium.support.ui.FluentWait;
 import startUp.DriverInitializer;
 
 import java.time.Duration;
@@ -25,21 +24,28 @@ public class DriverService {
     private static final int deviceWidth = getDeviceWidth();
     private static final int deviceHeight = getDeviceHeight();
 
+    public static void waitLoadPage () {
+        DriverInitializer.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
+    }
+
     public static void initPageElements(Object page) {
         PageFactory.initElements(DriverInitializer.getDriver(), page);
     }
 
     public static void hideKeyboard() {
         if (PlatformName.Android == Configuration.PLATFORM) {
-            ((AndroidDriver) DriverInitializer.getDriver()).pressKey(new KeyEvent(AndroidKey.ENTER));
+            ((AndroidDriver) DriverInitializer.getDriver()).pressKey(new KeyEvent(AndroidKey.BACK));
         } else if (PlatformName.iOS == Configuration.PLATFORM) {
             throw new NotImplementedException();
         }
     }
 
-    public static void waitElement(WebElement webElement) {
-        WebDriverWait wait = new WebDriverWait(DriverInitializer.getDriver(), Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfAllElements(webElement));
+    public static WebElement waitElementUseElement(WebElement element) {
+        return waitElement().until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public static WebElement waitElementUseLocator(By locator) {
+        return waitElement().until(ExpectedConditions.visibilityOfElementLocated(locator));
     }
 
     public static WebElement findElementBy(FindType findType, String path) {
@@ -53,8 +59,7 @@ public class DriverService {
         try {
             element = DriverInitializer.getDriver().findElement(by);
         } catch (Exception e) {
-            System.out.println("element doesn't found");
-            System.out.println(e.getMessage());
+            System.out.println();
         }
         return element;
     }
@@ -71,7 +76,7 @@ public class DriverService {
     }
 
     public static void swipeLeft(WebElement element) {
-        int widthQuarter = deviceWidth / 4;
+        int widthQuarter = deviceWidth / 3;
         int widthHalf = deviceWidth / 2;
         Point elementLocation = element.getLocation();
 
@@ -81,12 +86,16 @@ public class DriverService {
         moveFingerByCoordinates(point1, point2);
     }
 
-    public static int getDeviceHeight() {
-        return DriverInitializer.getDriver().manage().window().getSize().getHeight();
+    private static Dimension getSize () {
+        return DriverInitializer.getDriver().manage().window().getSize();
     }
 
-    public static int getDeviceWidth() {
-        return DriverInitializer.getDriver().manage().window().getSize().getWidth();
+    private static int getDeviceHeight() {
+        return getSize().getHeight();
+    }
+
+    private static int getDeviceWidth() {
+        return getSize().getWidth();
     }
 
     private static void moveFingerByCoordinates(Point point1, Point point2) {
@@ -99,5 +108,12 @@ public class DriverService {
 
         scroll.addAction(finger.createPointerUp(PointerInput.MouseButton.LEFT.asArg()));
         DriverInitializer.getDriver().perform(Collections.singletonList(scroll));
+    }
+    private static FluentWait<AppiumDriver> waitElement() {
+        return new FluentWait<>(DriverInitializer.getDriver())
+                .withTimeout(Duration.ofSeconds(10))
+                .withMessage("Элемент не найден")
+                .pollingEvery(Duration.ofMillis(500))
+                .ignoring(NoSuchElementException.class);
     }
 }

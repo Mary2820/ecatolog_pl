@@ -5,11 +5,11 @@ import org.openqa.selenium.support.FindBy;
 import services.DriverService;
 
 public class CatalogPage extends BasePage {
-    @FindBy(xpath = "//android.widget.ImageButton[@content-desc=\"Navigate up\"]")
-    WebElement searchIcon;
+    @FindBy(xpath = "//android.widget.TextView[1] [@text = \"Введите запрос\"]")
+    private WebElement searchText;
 
     public boolean isCatalogPageDisplayed () {
-        DriverService.waitElement(searchIcon);
-        return searchIcon.isDisplayed();
+        DriverService.waitElementUseElement(searchText);
+        return searchText.isDisplayed();
     }
 }

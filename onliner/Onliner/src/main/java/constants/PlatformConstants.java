@@ -8,6 +8,7 @@ public class PlatformConstants {
         public static final String APP = "E:\\apkOnliner\\by.onliner.catalog-216400.apk";
         public static final String APP_WAIT_ACTIVITY = "*";
         public static final String AUTOMATER_NAME = "UiAutomator2";
+        public static final String NO_RESET = "true";
     }
 
     public static class IOS {
