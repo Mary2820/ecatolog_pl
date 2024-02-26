@@ -11,8 +11,6 @@ public class DiscountGrid extends BasePage {
     @FindBy(xpath = "//android.widget.GridView[@resource-id=\"by.onliner.catalog:id/images\"]")
     private WebElement discountGrid;
 
-
-
     public boolean isDiscountGridDisplayed () {
         DriverService.waitElementUseElement(discountGrid);
         return discountGrid.isDisplayed();

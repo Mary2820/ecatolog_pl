@@ -57,7 +57,7 @@ public class HomePage extends BasePage {
     }
 
     public boolean isCardsCarouselDisplayed () {
-        DriverService.initPageElements(cardCarousel);
+        DriverService.waitElementUseElement(cardCarousel);
         return cardCarousel.isDisplayed();
     }
 }
