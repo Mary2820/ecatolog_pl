@@ -1,16 +1,17 @@
 package base;
 
-import org.junit.After;
-import org.junit.Before;
+
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
 import startUp.DriverInitializer;
 
 public class BaseTest {
-    @After
+    @AfterTest
     public void teardown() {
         DriverInitializer.setDriverNull();
     }
 
-    @Before
+    @BeforeTest
     public void startDriver () {
         DriverInitializer.getDriver();
     }

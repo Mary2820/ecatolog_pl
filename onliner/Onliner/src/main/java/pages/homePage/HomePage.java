@@ -24,6 +24,9 @@ public class HomePage extends BasePage {
     @FindBy(id = "by.onliner.catalog:id/st_storyly_list_recycler_view")
     private WebElement storyBar;
 
+    @FindBy(xpath = "//androidx.recyclerview.widget.RecyclerView[@resource-id=\"by.onliner.catalog:id/images\"]")
+    private WebElement cardCarousel;
+
     public boolean isLogoVisible () {
         return title.isDisplayed();
     }
@@ -51,5 +54,10 @@ public class HomePage extends BasePage {
     public boolean isStoryBarDisplayed () {
         DriverService.waitElementUseElement(storyBar);
         return storyBar.isDisplayed();
+    }
+
+    public boolean isCardsCarouselDisplayed () {
+        DriverService.initPageElements(cardCarousel);
+        return cardCarousel.isDisplayed();
     }
 }
