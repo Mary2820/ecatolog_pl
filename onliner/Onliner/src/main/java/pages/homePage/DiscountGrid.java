@@ -19,7 +19,7 @@ public class DiscountGrid extends BasePage {
     public boolean isGridElementDisplayed (String elementText) {
         WebElement element = getGridElement(elementText);
         while (element == null) {
-            DriverService.scrollDown();
+            DriverService.scrollDown1(elementText);
             element = getGridElement(elementText);
         }
         return element.isDisplayed();

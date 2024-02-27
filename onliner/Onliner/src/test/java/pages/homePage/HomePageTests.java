@@ -106,7 +106,6 @@ public class HomePageTests extends BaseTest {
         };
     }
 
-
     @Test(dataProvider = "gridElementsAndResultTitles")
     public void whenClickGridElementNavigateToResultPage(String element, String result) {
         DiscountGrid discountGrid = new DiscountGrid();
