@@ -1,7 +1,6 @@
 package pages.homePage;
 
 import enums.FindType;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import pages.BasePage;
@@ -19,7 +18,7 @@ public class DiscountGrid extends BasePage {
     public boolean isGridElementDisplayed (String elementText) {
         WebElement element = getGridElement(elementText);
         while (element == null) {
-            DriverService.scrollDown1(elementText);
+            DriverService.fastScrollDownTo(elementText);
             element = getGridElement(elementText);
         }
         return element.isDisplayed();

@@ -75,7 +75,7 @@ public class DriverService {
         moveFingerByCoordinates(point1, point2);
     }
 
-    public static void scrollDown1 (String elementToScroll) {
+    public static void fastScrollDownTo(String elementToScroll) {
         DriverInitializer.driver.findElement(AppiumBy.androidUIAutomator(
                 "new UiScrollable(new UiSelector().scrollable(true))" +
                         ".scrollIntoView(new UiSelector().text(\"" + elementToScroll + "\"))"));
