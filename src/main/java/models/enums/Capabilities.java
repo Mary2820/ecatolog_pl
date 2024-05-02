@@ -1,11 +1,10 @@
-package enums;
+package models.enums;
 
 public enum Capabilities {
     platformName,
     platformVersion,
     deviceName,
-    app,
-    appWaitActivity,
-    automationName,
+    appPackage,
+    appActivity,
     noReset
 }
